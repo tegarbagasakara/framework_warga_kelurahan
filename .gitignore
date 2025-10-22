@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+venv_baru/
+
+# Django
+db.sqlite3
+.env
+
+# IDE (VS Code)
+.vscode/
