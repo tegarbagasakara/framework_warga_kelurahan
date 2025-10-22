@@ -1,15 +1,21 @@
 # warga/urls.py
 
 from django.urls import path
-from .views import WargaListView, WargaDetailView, PengaduanListView 
+from .views import (
+    WargaListView, 
+    WargaDetailView, 
+    PengaduanListView, 
+    WargaCreateView,         # Import view baru
+    PengaduanCreateView      # Import view baru
+)
 
 urlpatterns = [
-    # 1. Daftar Semua Pengaduan (http://127.0.0.1:8000/pengaduan/) - HARUS DI ATAS PK
-    path('pengaduan/', PengaduanListView.as_view(), name='pengaduan-list'), 
+    # Warga
+    path('tambah/', WargaCreateView.as_view(), name='warga-tambah'), # URL tambah Warga (Harus di atas path dinamis)
+    path('', WargaListView.as_view(), name='warga-list'),
+    path('<int:pk>/', WargaDetailView.as_view(), name='warga-detail'),
     
-    # 2. Daftar Warga (http://127.0.0.1:8000/)
-    path('', WargaListView.as_view(), name='warga-list'), 
-    
-    # 3. Detail Warga (http://127.0.0.1:8000/1/)
-    path('<int:pk>/', WargaDetailView.as_view(), name='warga-detail'), 
+    # Pengaduan
+    path('pengaduan/', PengaduanListView.as_view(), name='pengaduan-list'),
+    path('pengaduan/tambah/', PengaduanCreateView.as_view(), name='pengaduan-tambah'),
 ]

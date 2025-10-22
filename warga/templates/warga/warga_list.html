@@ -6,17 +6,25 @@
 <body>
     <h1>Daftar Warga</h1>
     
-    <ul>
-        {% for warga in object_list %}
-            <li>
-                <a href="{% url 'warga-detail' warga.pk %}">
-                    {{ warga.nama_lengkap }} 
-                </a> 
-                - NIK: {{ warga.nik }}
-            </li>
-        {% empty %}
-            <li>Belum ada data warga yang terdaftar.</li>
-        {% endfor %}
-    </ul>
+    <a href="{% url 'warga-tambah' %}">Tambah Warga Baru</a>
+    |
+    <a href="{% url 'pengaduan-tambah' %}">Buat Pengaduan Baru</a> 
+    
+    <hr>
+
+    {% if object_list %}
+        <ul>
+            {% for warga in object_list %}
+                <li>
+                    <a href="{% url 'warga-detail' pk=warga.pk %}">
+                        <strong>{{ warga.nama_lengkap }}</strong>
+                    </a> 
+                    (NIK: {{ warga.nik }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Belum ada data warga yang terdaftar.</p>
+    {% endif %}
 </body>
 </html>
