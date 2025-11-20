@@ -17,15 +17,15 @@ Including another URLconf
 # data_kelurahan/urls.py
 
 from django.contrib import admin
-from django.urls import path, include 
+from django.urls import path, include
 
 urlpatterns = [
-    
+    # 1. PATH BARU: Mengarahkan root URL (path='') ke aplikasi 'warga'
     path('', include('warga.urls')), 
-    
-    
+
+    # 2. PATH ADMIN
     path('admin/', admin.site.urls),
     
-    
-    
+    # 3. PATH API
+    path('api/', include('warga.api_urls')), 
 ]

@@ -5,10 +5,15 @@ from django.views.generic import (
     ListView, DetailView, CreateView, 
     UpdateView, DeleteView 
 )
+# Impor DRF: Tambahkan ListAPIView dan RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView 
+
 from .models import Warga, Pengaduan
 from .forms import WargaForm, PengaduanForm 
+from .serializers import WargaSerializer # Impor Serializer
 
 
+# --- HTML VIEWS (CRUD Lama) ---
 
 class WargaListView(ListView):
     model = Warga
@@ -20,8 +25,6 @@ class PengaduanListView(ListView):
     model = Pengaduan
     template_name = 'warga/pengaduan_list.html'
     context_object_name = 'semua_pengaduan'
-
-
 
 class WargaCreateView(CreateView):
     model = Warga
@@ -35,8 +38,6 @@ class PengaduanCreateView(CreateView):
     template_name = 'warga/pengaduan_form.html'
     success_url = reverse_lazy('pengaduan-list')
 
-
-
 class WargaUpdateView(UpdateView):
     model = Warga
     form_class = WargaForm
@@ -49,9 +50,6 @@ class PengaduanUpdateView(UpdateView):
     template_name = 'warga/pengaduan_form.html' 
     success_url = reverse_lazy('pengaduan-list')
 
-
-
-
 class WargaDeleteView(DeleteView):
     model = Warga
     template_name = 'warga/warga_confirm_delete.html'
@@ -61,3 +59,16 @@ class PengaduanDeleteView(DeleteView):
     model = Pengaduan
     template_name = 'warga/pengaduan_confirm_delete.html'
     success_url = reverse_lazy('pengaduan-list')
+
+
+# --- API VIEWS (DRF - Pertemuan 6) ---
+
+# 1. API List: Daftar semua Warga (GET /api/warga/)
+class WargaListAPIView(ListAPIView):
+    queryset = Warga.objects.all()
+    serializer_class = WargaSerializer
+
+# 2. API Detail: Detail satu Warga (GET /api/warga/<pk>/) - SOLUSI TUGAS PRAKTIK
+class WargaDetailAPIView(RetrieveAPIView):
+    queryset = Warga.objects.all()
+    serializer_class = WargaSerializer
