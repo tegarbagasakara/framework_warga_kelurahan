@@ -5,15 +5,12 @@ from django.views.generic import (
     ListView, DetailView, CreateView, 
     UpdateView, DeleteView 
 )
-# Impor DRF: Tambahkan ListAPIView dan RetrieveAPIView
-from rest_framework.generics import ListAPIView, RetrieveAPIView 
+
+from rest_framework import viewsets 
 
 from .models import Warga, Pengaduan
 from .forms import WargaForm, PengaduanForm 
-from .serializers import WargaSerializer # Impor Serializer
-
-
-# --- HTML VIEWS (CRUD Lama) ---
+from .serializers import PengaduanSerializer, WargaSerializer 
 
 class WargaListView(ListView):
     model = Warga
@@ -60,15 +57,19 @@ class PengaduanDeleteView(DeleteView):
     template_name = 'warga/pengaduan_confirm_delete.html'
     success_url = reverse_lazy('pengaduan-list')
 
-
-# --- API VIEWS (DRF - Pertemuan 6) ---
-
-# 1. API List: Daftar semua Warga (GET /api/warga/)
-class WargaListAPIView(ListAPIView):
-    queryset = Warga.objects.all()
+class WargaViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint yang menyediakan fungsionalitas CRUD penuh untuk model Warga.
+    """
+    queryset = Warga.objects.all().order_by('-nik') 
     serializer_class = WargaSerializer
 
-# 2. API Detail: Detail satu Warga (GET /api/warga/<pk>/) - SOLUSI TUGAS PRAKTIK
-class WargaDetailAPIView(RetrieveAPIView):
-    queryset = Warga.objects.all()
-    serializer_class = WargaSerializer
+
+class PengaduanViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint yang menyediakan fungsionalitas CRUD penuh untuk model Pengaduan.
+    Menggunakan tanggal_lapor sebagai field pengurutan yang benar.
+    """
+    
+    queryset = Pengaduan.objects.all().order_by('-tanggal_lapor') 
+    serializer_class = PengaduanSerializer
