@@ -7,10 +7,11 @@ from django.views.generic import (
 )
 
 from rest_framework import viewsets 
-
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .models import Warga, Pengaduan
 from .forms import WargaForm, PengaduanForm 
 from .serializers import PengaduanSerializer, WargaSerializer 
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class WargaListView(ListView):
     model = Warga
@@ -58,18 +59,11 @@ class PengaduanDeleteView(DeleteView):
     success_url = reverse_lazy('pengaduan-list')
 
 class WargaViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint yang menyediakan fungsionalitas CRUD penuh untuk model Warga.
-    """
     queryset = Warga.objects.all().order_by('-nik') 
     serializer_class = WargaSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class PengaduanViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint yang menyediakan fungsionalitas CRUD penuh untuk model Pengaduan.
-    Menggunakan tanggal_lapor sebagai field pengurutan yang benar.
-    """
-    
     queryset = Pengaduan.objects.all().order_by('-tanggal_lapor') 
     serializer_class = PengaduanSerializer

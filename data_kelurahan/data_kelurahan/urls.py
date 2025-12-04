@@ -18,14 +18,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    # 1. PATH BARU: Mengarahkan root URL (path='') ke aplikasi 'warga'
     path('', include('warga.urls')), 
-
-    # 2. PATH ADMIN
     path('admin/', admin.site.urls),
-    
-    # 3. PATH API
     path('api/', include('warga.api_urls')), 
+    path('api/auth/token/', obtain_auth_token, name='api-token-auth'),
 ]
